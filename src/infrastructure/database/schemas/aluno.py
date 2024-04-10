@@ -9,11 +9,10 @@ class Aluno(Base):
     __tablename__ = "aluno"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    email = Column(String)
-    matricula = Column(String, unique=True, nullable=False, index=True)
-    senha = Column(String)
+    email = Column(String, unique=True)
 
     def __repr__(self) -> str:
-        return f"Aluno(id={self.id!r}, email={self.email!r}, matricula={self.matricula!r})"
+        return f"Aluno(id={self.id!r}, email={self.email!r}"
+
 
 Base.metadata.create_all(engine)
