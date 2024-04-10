@@ -1,6 +1,6 @@
 from typing import Optional
 from datetime import datetime
-from sqlalchemy import Column, ForeignKey, String, DATETIME
+from sqlalchemy import Column, ForeignKey, String, DATETIME, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.dialects.postgresql import UUID, TEXT
 
@@ -10,15 +10,15 @@ from src.infrastructure.database.connection import Base, engine
 
 class Solicitacao(Base):
     __tablename__ = "solicitacao"
+    __table_args__ = (UniqueConstraint('aluno_id', 'professor_id'))
 
     aluno_id = Column(UUID(as_uuid=True), ForeignKey("aluno.id"), primary_key=True)
     professor_id = Column(UUID(as_uuid=True), ForeignKey("professor.id"), primary_key=True)
     status= Column(String(20))
     description = Column(String(150))
     comment = Column(TEXT(500))
-    created_at = Column(DATETIME, default=datetime.now, onupdate=datetime.now) 
-    updated_at = Column(DATETIME, default=datetime.now, onupdate=datetime.now) 
-
+    created_at = Column(DATETIME, default=datetime.now, onupdate=datetime.now)
+    updated_at = Column(DATETIME, default=datetime.now, onupdate=datetime.now)
     # association between Assocation -> Child
     professor: Mapped["Professor"] = relationship(back_populates="professor")
 
