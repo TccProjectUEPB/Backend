@@ -27,6 +27,7 @@ def authenticated(scope):
                     "UNAUTHORIZED", HTTPStatus.UNAUTHORIZED, content_type="plain/text"
                 )
             request.ctx.user_id = payload["sub"]
+            request.ctx.user_type = payload["type"]
             return await next(request, *args, **kwargs)
 
         return auth

@@ -35,6 +35,7 @@ class CreateProfessorModel(CreateAuthModel):
 
 class ProfessorModel(BaseModel):
     id: Optional[UUID] = None
+    name: Optional[StrictStr] = None
     email: str
     created_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now().replace(microsecond=0)

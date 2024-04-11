@@ -8,10 +8,10 @@ import bcrypt
 
 
 class AlunoService:
-    async def get_one(self, aluno_id):
+    async def get_one(self, id):
         async with get_db() as session:
             repo = AlunoRepository(session)
-            return await repo.get_one(aluno_id)
+            return await repo.get_one(id)
 
     async def get_all(self, request: HttpRequest):
         query = AlunoQueryModel(**request.query).query_dict()
@@ -47,7 +47,8 @@ class AlunoService:
                 return result
             except BaseException as err:
                 await session.rollback()
-                raise ConflictException("Already exist", "email/username/matricula already used")
+                raise ConflictException(
+                    "Already exist", "email/username/matricula already used")
 
     async def update_one(self, id: str, request: HttpRequest):
         aluno = AlunoModel(**request.body)
