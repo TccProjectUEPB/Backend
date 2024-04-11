@@ -42,7 +42,7 @@ class AuthRepository:
 
     async def update_one(self, id, data):
         update_stmt = Auth.__table__.update().returning(
-            Auth.id, Auth.email, Auth.created_at, Auth.updated_at)\
+            Auth.id, Auth.username, Auth.matricula, Auth.last_login, Auth.user_type)\
             .where(Auth.id == id)\
             .values(**data)
         result = (await self.session.execute(update_stmt)).fetchone()

@@ -42,7 +42,6 @@ class ApiExceptionManager:
             )
 
         if isinstance(err, StatementError):
-            print(dir(err), err.detail, err.args)
             return ApiException(
                 HTTPStatus.BAD_REQUEST.value,
                 HTTPStatus.BAD_REQUEST.phrase,
@@ -55,7 +54,6 @@ class ApiExceptionManager:
             )
 
         # logger.exception("Api: Internal Server Error")
-        print(err)
         return ApiException(
             HTTPStatus.INTERNAL_SERVER_ERROR.value,
             HTTPStatus.INTERNAL_SERVER_ERROR.phrase,
