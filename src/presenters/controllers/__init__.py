@@ -1,0 +1,2 @@
+from .aluno_controller import AlunoController
+from .professor_controller import ProfessorController

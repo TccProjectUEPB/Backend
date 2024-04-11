@@ -4,4 +4,5 @@ class Base(AsyncAttrs, DeclarativeBase):
     pass
 from .aluno import Aluno
 from .professor import Professor
+from .auth import Auth
 from .solicitacao import Solicitacao

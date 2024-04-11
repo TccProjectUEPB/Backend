@@ -2,10 +2,10 @@ from .api_exception import ApiException
 from .unauthorized_exception import UnauthorizedException
 #from .unprocessable_exception import UnprocessableException
 from .validation_exception import ValidationException
-from pydantic.error_wrappers import ValidationError
+from pydantic import ValidationError
 from http import HTTPStatus
 from sanic.exceptions import InvalidUsage
-from sqlalchemy.exc import DatabaseError, IntegrityError
+from sqlalchemy.exc import DatabaseError, IntegrityError, StatementError
 
 
 class ApiExceptionManager:
@@ -41,13 +41,21 @@ class ApiExceptionManager:
                 HTTPStatus.CONFLICT.description,
             )
 
+        if isinstance(err, StatementError):
+            print(dir(err), err.detail, err.args)
+            return ApiException(
+                HTTPStatus.BAD_REQUEST.value,
+                HTTPStatus.BAD_REQUEST.phrase,
+                err.args[0],
+            )
+
         if isinstance(err, DatabaseError):
             return ApiException(
                 HTTPStatus.UNPROCESSABLE_ENTITY.value, err.message, err.description
             )
 
         # logger.exception("Api: Internal Server Error")
-
+        print(err)
         return ApiException(
             HTTPStatus.INTERNAL_SERVER_ERROR.value,
             HTTPStatus.INTERNAL_SERVER_ERROR.phrase,

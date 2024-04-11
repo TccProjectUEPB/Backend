@@ -9,12 +9,13 @@ class Auth(Base):
     __tablename__ = "auth"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    username = Column(String, unique=True, nullable=False, index=True)
-    matricula = Column(String, unique=True, nullable=False, index=True)
-    user_type = Column(String, nullable=False)
-    senha = Column(String)
-    last_login = Column(DateTime, default=datetime.utcnow)
-    foreign_id = Column(String, nullable=False)
+    username = Column(String(30), unique=True, nullable=False, index=True)
+    matricula = Column(String(40), unique=True, nullable=False, index=True)
+    user_type = Column(String(30), nullable=False)
+    password = Column(String)
+    refresh_token = Column(String, nullable=True)
+    last_login = Column(DateTime, nullable=True)
+    foreign_id = Column(UUID, nullable=False)
 
 
     def __repr__(self) -> str:
