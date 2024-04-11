@@ -1,0 +1,1 @@
+from .authenticated_middleware import authenticated

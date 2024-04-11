@@ -1,5 +1,5 @@
 from sanic import Sanic
-from src.routes import ROUTES
+from src.main.routes import ROUTES
 from src.infrastructure.database.connection import init_models
 
 app = Sanic("http")

@@ -1,7 +1,5 @@
-from typing import List
 from src.application.models import ProfessorModel
 from src.infrastructure.database import get_db
-from src.infrastructure.database.schemas import Professor
 from src.infrastructure.repositories import ProfessorRepository
 from sanic import Blueprint, request, response
 
