@@ -17,7 +17,8 @@ PORT_HTTPS = os.getenv("PORT_HTTPS")
 SSL_CERT_PATH = os.getenv("SSL_CERT_PATH")
 SSL_KEY_PATH = os.getenv("SSL_KEY_PATH")
 
-ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@vr.com")
+ADMIN_USERNAME = os.getenv("ADMIN_USERNAME", "admin")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@tcc.com")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123")
 
 POSTGRES_URI = os.getenv("POSTGRES_URI")

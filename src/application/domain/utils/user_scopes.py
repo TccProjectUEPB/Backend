@@ -11,10 +11,12 @@ class UserScopes(Enum):
         "al:ra",
         "al:r",
         "al:u",
+        "al:d",
         "pf:c",  # Professor
         "pf:ra",
         "pf:r",
         "pf:u",
+        "pf:d",
     ]
 
     GESTOR = [

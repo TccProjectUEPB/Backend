@@ -15,7 +15,7 @@ class Auth(Base):
     password = Column(String)
     refresh_token = Column(String, nullable=True)
     last_login = Column(DateTime, nullable=True)
-    foreign_id = Column(UUID, nullable=False)
+    foreign_id = Column(UUID, nullable=True)
 
 
     def __repr__(self) -> str:

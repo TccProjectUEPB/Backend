@@ -49,5 +49,6 @@ class AuthController:
                             "refresh_token": bcrypt.hashpw(token.encode("utf8"), bcrypt.gensalt(12)).decode("utf8")
                 }
                 await repo.update_one(str(result.id), {"refresh_token": response["refresh_token"], "last_login": datetime.now()})
-        return HttpResponse.build(response, HTTPStatus.OK, {})
+                return HttpResponse.build(response, HTTPStatus.OK, {})
+        return HttpResponse.build(response, HTTPStatus.UNAUTHORIZED, {})
 
