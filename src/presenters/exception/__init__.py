@@ -1,2 +1,3 @@
 from .api_exception_manager import ApiExceptionManager
+from .conflict_exception import ConflictException
 from .validation_exception import ValidationException

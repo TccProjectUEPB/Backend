@@ -1,6 +1,7 @@
 from .api_exception import ApiException
 from .unauthorized_exception import UnauthorizedException
 #from .unprocessable_exception import UnprocessableException
+from .conflict_exception import ConflictException
 from .validation_exception import ValidationException
 from pydantic import ValidationError
 from http import HTTPStatus
@@ -35,10 +36,18 @@ class ApiExceptionManager:
             )
 
         if isinstance(err, IntegrityError):
+            print(err)
             return ApiException(
                 HTTPStatus.CONFLICT.value,
                 HTTPStatus.CONFLICT.phrase,
                 HTTPStatus.CONFLICT.description,
+            )
+
+        if isinstance(err, ConflictException):
+            return ApiException(
+                HTTPStatus.CONFLICT.value,
+                HTTPStatus.CONFLICT.phrase,
+                err.description,
             )
 
         if isinstance(err, StatementError):
@@ -52,7 +61,7 @@ class ApiExceptionManager:
             return ApiException(
                 HTTPStatus.UNPROCESSABLE_ENTITY.value, err.message, err.description
             )
-
+        print(err)
         # logger.exception("Api: Internal Server Error")
         return ApiException(
             HTTPStatus.INTERNAL_SERVER_ERROR.value,
