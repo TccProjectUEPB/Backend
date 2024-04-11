@@ -3,7 +3,8 @@ from pydantic import BaseModel, RootModel, ConfigDict, Field, field_serializer
 from uuid import UUID
 from datetime import datetime
 
-class AlunoModel(BaseModel):
+
+class ProfessorModel(BaseModel):
     id: Optional[UUID] = Field(None, alias="id_1")
     email: str
     created_at: Optional[datetime] = Field(
@@ -23,5 +24,5 @@ class AlunoModel(BaseModel):
     def serialize_id(self, id):
         return str(id)
 
-class AlunoList(RootModel):
-    root: List[AlunoModel]
+class ProfessorList(RootModel):
+    root: List[ProfessorModel]

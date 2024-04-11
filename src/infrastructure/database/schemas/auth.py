@@ -1,7 +1,7 @@
 import uuid
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.dialects.postgresql import UUID
-from src.infrastructure.database.connection import Base, engine
+from . import Base
 from datetime import datetime
 
 
@@ -20,6 +20,3 @@ class Auth(Base):
     def __repr__(self) -> str:
         return f"Auth(id={self.id!r}, username={self.username!r}, matricula={self.matricula!r}" \
                 + f", user_type={self.user_type}, last_login={self.last_login}, foreign_id={self.foreign_id})"
-
-
-Base.metadata.create_all(engine)

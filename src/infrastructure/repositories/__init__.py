@@ -1,0 +1,2 @@
+from .aluno_repository import AlunoRepository
+from .professor_repository import ProfessorRepository
