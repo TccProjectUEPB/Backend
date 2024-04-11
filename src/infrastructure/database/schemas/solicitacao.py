@@ -27,5 +27,7 @@ class Solicitacao(Base):
     aluno = relationship(Aluno, backref="aluno")
 
     def __repr__(self) -> str:
-        return f"Solicitacao(id={self.id!r}, email={self.email!r})"
+        return '{"aluno_id":"'+ str(self.aluno_id) + '", "professor_id": "'+str(self.professor_id)+'", '\
+            +'", "status": "'+self.status+'", '+'", "description": "'+self.description+'", '\
+            +'", "comment": "'+self.comment+'", '+'}'
 
