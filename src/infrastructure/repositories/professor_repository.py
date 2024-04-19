@@ -52,3 +52,11 @@ class ProfessorRepository:
     async def delete_one(self, id):
         await self.session.execute(delete(Professor).where(Professor.id == id))
         await self.session.commit()
+
+
+    async def check_status(self, id):
+        get_status_stmt = select(Professor.status).where(Professor.id == id).limit(1)
+        result = await self.session.execute(get_status_stmt)
+        status = result.scalar()
+        return status
+

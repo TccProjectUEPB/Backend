@@ -15,6 +15,7 @@ class CreateProfessorModel(CreateAuthModel):
     id: Optional[UUID] = None
     name: StrictStr = Field(..., min_length=10, max_length=60)
     email: EmailStr = Field(..., min_length=10, max_length=250)
+    status: StrictStr = Field(..., min_length=1, max_length=20)
     created_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now().replace(microsecond=0)
     )
