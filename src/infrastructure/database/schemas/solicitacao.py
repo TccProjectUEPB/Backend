@@ -13,21 +13,22 @@ class Solicitacao(Base):
     __tablename__ = "solicitacao"
     __table_args__ = (UniqueConstraint('aluno_id', 'professor_id'),)
 
-    aluno_id = Column(UUID(as_uuid=True), ForeignKey("aluno.id"), primary_key=True)
-    professor_id = Column(UUID(as_uuid=True), ForeignKey("professor.id"), primary_key=True)
-    status= Column(String(20))
+    aluno_id = Column(UUID(as_uuid=True), ForeignKey(
+        "aluno.id"), primary_key=True)
+    professor_id = Column(UUID(as_uuid=True), ForeignKey(
+        "professor.id"), primary_key=True)
+    status = Column(String(20))
     description = Column(String(150))
     comment = Column(TEXT)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     # association between Assocation -> Child
-    professor = relationship(Professor, backref = "professor")
+    professor = relationship(Professor, backref="professor")
 
     # association between Assocation -> Parent
     aluno = relationship(Aluno, backref="aluno")
 
     def __repr__(self) -> str:
-        return '{"aluno_id":"'+ str(self.aluno_id) + '", "professor_id": "'+str(self.professor_id)+'", '\
-            +'", "status": "'+self.status+'", '+'", "description": "'+self.description+'", '\
-            +'", "comment": "'+self.comment+'", '+'}'
-
+        return '{"aluno_id":"' + str(self.aluno_id) + '", "professor_id": "'+str(self.professor_id)+'", '\
+            + '", "status": "'+self.status+'", '+'", "description": "'+self.description+'", '\
+            + '", "comment": "'+self.comment+'", '+'}'
