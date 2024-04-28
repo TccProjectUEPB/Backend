@@ -39,24 +39,16 @@ class SolicitacaoRepository:
                 .model_dump_json())
         return result
 
-    async def get_by_prof(self, id):
-        get_one_stmt = select(Solicitacao).where(
-            Solicitacao.professor_id == id).limit()
-        result = (await self.session.execute(get_one_stmt)).fetchone()
-        if result:
-            result = result[0]
-            result = loads(SolicitacaoModel(
-                id=result.id, aluno_id=result.aluno_id, professor_id=result.professor_id,
-                status=result.status, description=result.description, comment=result.comment,
-                created_at=result.created_at, updated_at=result.updated_at)
-                .model_dump_json())
-        return result
+    async def get_by_prof(self, filters={}):
+        stmt = select(Solicitacao).filter_by(**filters["query"]).limit(filters["limit"])
+        stream = await self.session.stream_scalars(stmt.order_by(Solicitacao.id))
+        return loads(SolicitacaoList(root=[aluno async for aluno in stream]).model_dump_json())
 
     async def get_all(self, filters={}):
         stmt = select(Solicitacao).filter_by(
             **filters["query"]).limit(filters["limit"])
         stream = await self.session.stream_scalars(stmt.order_by(Solicitacao.id))
-        return loads(SolicitacaoList(root=[aluno async for aluno in stream]).model_dump_json())
+        return loads(SolicitacaoList(root=[solicitacao async for solicitacao in stream]).model_dump_json())
 
     async def update_one(self, id, data):
         update_stmt = Solicitacao.__table__.update().returning(

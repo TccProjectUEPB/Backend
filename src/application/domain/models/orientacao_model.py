@@ -1,6 +1,6 @@
 from typing import Optional, List, Union
 from .query_model import QueryModel
-from src.application.domain.utils import RequestType, TypeOpStr, TypeOpBool
+from src.application.domain.utils import OrientationType, TypeOpStr, TypeOpBool
 from pydantic import (
     BaseModel, RootModel, ConfigDict,
     Field, field_serializer,
@@ -10,13 +10,14 @@ from uuid import UUID
 from datetime import datetime
 
 
-class CreateSolicitacaoModel(BaseModel):
+class CreateOrientacaoModel(BaseModel):
     id: Optional[UUID] = None
     aluno_id: UUID
     professor_id: UUID
-    status: StrictStr = RequestType.PENDENTE.value
+    status: StrictStr = OrientationType.EM_ANDAMENTO.value
+    title: StrictStr
     description: StrictStr
-    comment: StrictStr
+    metodology: StrictStr
     created_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now().replace(microsecond=0)
     )
@@ -35,13 +36,14 @@ class CreateSolicitacaoModel(BaseModel):
         return str(id)
 
 
-class SolicitacaoModel(BaseModel):
+class OrientacaoModel(BaseModel):
     id: Optional[UUID] = None
     aluno_id: UUID
     professor_id: UUID
-    status: StrictStr
+    title: StrictStr
     description: StrictStr
-    comment: StrictStr
+    description: StrictStr
+    metodology: StrictStr
     created_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now().replace(microsecond=0)
     )
@@ -60,14 +62,16 @@ class SolicitacaoModel(BaseModel):
         return str(id)
 
 
-class SolicitacaoList(RootModel):
-    root: List[SolicitacaoModel]
+class OrientacaoList(RootModel):
+    root: List[OrientacaoModel]
 
 
-class SolicitacaoQueryModel(QueryModel):
+class OrientacaoQueryModel(QueryModel):
     id: Optional[List[UUID]] = None
     professor_id: Optional[List[UUID]] = None
     status: Optional[List[Union[TypeOpStr, StrictStr]]] = None
+    title: Optional[List[Union[TypeOpStr, StrictStr]]] = None
+    metodology: Optional[List[Union[TypeOpStr, StrictStr]]] = None
     
 
     def integrate_regex(text: str):

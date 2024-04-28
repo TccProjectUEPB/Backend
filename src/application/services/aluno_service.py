@@ -15,6 +15,7 @@ class AlunoService:
 
     async def get_all(self, request: HttpRequest):
         query = AlunoQueryModel(**request.query).query_dict()
+        print(query)
         async with get_db() as session:
             repo = AlunoRepository(session)
             return await repo.get_all(query)

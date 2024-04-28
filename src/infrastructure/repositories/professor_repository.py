@@ -28,7 +28,7 @@ class ProfessorRepository:
         result = (await self.session.execute(get_one_stmt)).fetchone()
         if result:
             result = result[0]
-            result = loads(ProfessorModel(id=result.id, name=result.name, email=result.email, created_at=result.created_at, updated_at=result.updated_at)
+            result = loads(ProfessorModel(id=result.id, name=result.name, email=result.email, available=result.available, created_at=result.created_at, updated_at=result.updated_at)
                            .model_dump_json())
         return result
 
