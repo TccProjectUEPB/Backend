@@ -15,14 +15,14 @@ def authenticated(scope):
                     content_type="plain/text",
                 )
             try:
-                payload = jwt.decode(request.token, settings.JWT_SECRET, "HS256")
+                payload = jwt.decode(request.token, settings.JWT_SECRET, "HS256", verify=True)
             except BaseException as err:
                 return HttpResponse.build(
                     err.args[0],
                     HTTPStatus.UNAUTHORIZED,
                     content_type="plain/text",
                 )
-            if scope not in payload["scope"]:
+            if f"'{scope}'" not in payload["scope"]:
                 return HttpResponse.build(
                     "UNAUTHORIZED", HTTPStatus.UNAUTHORIZED, content_type="plain/text"
                 )

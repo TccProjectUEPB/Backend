@@ -14,11 +14,11 @@ async def create_solicitacao(request):
 
 @SOLICITACAO_ROUTES.route("/professores/<professor_id:str>/solicitacoes", methods=["GET"])
 async def get_solicitacao_by_prof(request, professor_id):
-    method = partial(SolicitacaoController().send, professor_id)
+    method = partial(SolicitacaoController().get_by_prof, professor_id)
     return await sanic_request_handler(method, request)
 
 
-@SOLICITACAO_ROUTES.route("/alunos/<aluno_id:str>/solicitacoes", methods=["GET"])
-async def get_solicitacao_by_aluno(request, professor_id):
+@SOLICITACAO_ROUTES.route("/solicitacoes", methods=["GET"])
+async def create_solicitacao(request, professor_id):
     method = partial(SolicitacaoController().send, professor_id)
     return await sanic_request_handler(method, request)

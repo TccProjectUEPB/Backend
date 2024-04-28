@@ -14,11 +14,11 @@ class ProfessorRepository:
 
     async def create(self, data: Dict[str, Any], commit = True):
         insert_stmt = Professor.__table__.insert().returning(
-            Professor.id, Professor.name, Professor.email, Professor.created_at, Professor.updated_at)\
+            Professor.id, Professor.name, Professor.email, Professor.available, Professor.created_at, Professor.updated_at)\
             .values(**data)
         result = (await self.session.execute(insert_stmt)).fetchone()
         if result:
-            result = loads(ProfessorModel(id=result[0], name=result[1], email=result[2], created_at=result[3], updated_at=result[4])
+            result = loads(ProfessorModel(id=result[0], name=result[1], email=result[2], available=result[3], created_at=result[4], updated_at=result[5])
                            .model_dump_json())
             commit and await self.session.commit()
         return result
@@ -35,16 +35,16 @@ class ProfessorRepository:
     async def get_all(self, filters={}):
         stmt = select(Professor).filter_by(**filters["query"]).limit(filters["limit"])
         stream = await self.session.stream_scalars(stmt.order_by(Professor.id))
-        return loads(ProfessorList(root=[aluno async for aluno in stream]).model_dump_json())
+        return loads(ProfessorList(root=[professor async for professor in stream]).model_dump_json())
 
     async def update_one(self, id, data):
         update_stmt = Professor.__table__.update().returning(
-            Professor.id, Professor.name, Professor.email, Professor.created_at, Professor.updated_at)\
+            Professor.id, Professor.name, Professor.email, Professor.available, Professor.created_at, Professor.updated_at)\
             .where(Professor.id == id)\
             .values(**data)
         result = (await self.session.execute(update_stmt)).fetchone()
         if result:
-            result = loads(ProfessorModel(id=result[0], name=result[1], email=result[2], created_at=result[3], updated_at=result[4])
+            result = loads(ProfessorModel(id=result[0], name=result[1], email=result[2], available=result[3], created_at=result[4], updated_at=result[5])
                            .model_dump_json())
             await self.session.commit()
         return result

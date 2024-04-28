@@ -1,21 +1,22 @@
 from typing import Optional, List, Union
-from .credential_model import CreateAuthModel
 from .query_model import QueryModel
-from src.application.domain.utils import TypeOpStr, TypeOpBool
+from src.application.domain.utils import RequestType, TypeOpStr, TypeOpBool
 from pydantic import (
     BaseModel, RootModel, ConfigDict,
     Field, field_serializer,
-    EmailStr, StrictStr, StrictBool
+    StrictStr
 )
 from uuid import UUID
 from datetime import datetime
 
 
-class CreateProfessorModel(CreateAuthModel):
+class CreateSolicitacaoModel:
     id: Optional[UUID] = None
-    name: StrictStr = Field(..., min_length=10, max_length=60)
-    email: EmailStr = Field(..., min_length=10, max_length=250)
-    available: StrictBool = True
+    aluno_id: UUID
+    professor_id: UUID
+    status: StrictStr = RequestType.PENDENTE.value
+    description: StrictStr
+    comment: StrictStr
     created_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now().replace(microsecond=0)
     )
@@ -34,11 +35,13 @@ class CreateProfessorModel(CreateAuthModel):
         return str(id)
 
 
-class ProfessorModel(BaseModel):
+class SolicitacaoModel(BaseModel):
     id: Optional[UUID] = None
-    name: Optional[StrictStr] = None
-    email: str
-    available: bool
+    aluno_id: UUID
+    professor_id: UUID
+    status: StrictStr
+    description: StrictStr
+    comment: StrictStr
     created_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now().replace(microsecond=0)
     )
@@ -57,17 +60,18 @@ class ProfessorModel(BaseModel):
         return str(id)
 
 
-class ProfessorList(RootModel):
-    root: List[ProfessorModel]
+class SolicitacaoList(RootModel):
+    root: List[SolicitacaoModel]
 
-class ProfessorQueryModel(QueryModel):
+
+class SolicitacaoQueryModel(QueryModel):
     id: Optional[List[UUID]] = None
-    name: Optional[List[Union[TypeOpStr, StrictStr]]] = None
-    email: Optional[List[Union[TypeOpStr, StrictStr]]] = None
-    available: Optional[List[Union[TypeOpBool, bool]]] = None
+    professor_id: Optional[List[UUID]] = None
+    status: Optional[List[Union[TypeOpStr, StrictStr]]] = None
+    
 
     def integrate_regex(text: str):
-        #text = f"^{text}" if text[0] != ["*"] else text.replace("*", ".*", 1)
-        #text = f"{text}$" if text[-1] != ["*"] else text.replace("*", ".*", 1)
+        # text = f"^{text}" if text[0] != ["*"] else text.replace("*", ".*", 1)
+        # text = f"{text}$" if text[-1] != ["*"] else text.replace("*", ".*", 1)
 
-        return text#.replace("*", ".*")
+        return text  # .replace("*", ".*")

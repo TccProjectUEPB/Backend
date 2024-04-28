@@ -11,3 +11,8 @@ class SolicitacaoController:
         result = await SolicitacaoRepository().create(request)
 
         return HttpResponse.build(result, HTTPStatus.CREATED, {})
+
+    async def get_by_prof(self, professor_id: str, request: HttpRequest = None):
+        result = await SolicitacaoRepository().get_by_prof(professor_id)
+
+        return HttpResponse.build(result, HTTPStatus.OK, {})

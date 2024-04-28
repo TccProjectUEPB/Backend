@@ -14,6 +14,7 @@ class UserScopes(Enum):
         "al:d",
         "pf:c",  # Professor
         "pf:ra",
+        "pf:avr",
         "pf:r",
         "pf:u",
         "pf:d",
@@ -23,6 +24,7 @@ class UserScopes(Enum):
         "al:ra",
         "al:r",  # Aluno
         "pf:ra",
+        "pf:avr",
         "pf:r",
         "pf:u",  # Professor
     ]
@@ -38,5 +40,6 @@ class UserScopes(Enum):
     ALUNO = [
         "al:r",  # Aluno
         "al:ra",
+        "pf:avr",
         "al:u",
     ]

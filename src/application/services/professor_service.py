@@ -20,20 +20,20 @@ class ProfessorService:
             return await repo.get_all(query)
 
     async def create(self, request: HttpRequest):
-        aluno = CreateProfessorModel(**request.body)
+        professor = CreateProfessorModel(**request.body)
         result = None
         async with get_db() as session:
             repo = ProfessorRepository(session)
             try:
                 result = await repo.create(
-                    aluno.model_dump(exclude_none=True, exclude={
+                    professor.model_dump(exclude_none=True, exclude={
                                      "id", "username", "matricula", "password"}),
                     commit=False
                 )
-                aluno.password = bcrypt.hashpw(
-                    aluno.password.encode(), bcrypt.gensalt(13)
+                professor.password = bcrypt.hashpw(
+                    professor.password.encode(), bcrypt.gensalt(13)
                 ).decode()
-                auth = AuthModel(**{**aluno.model_dump(exclude_none=True, exclude={"id"}),
+                auth = AuthModel(**{**professor.model_dump(exclude_none=True, exclude={"id"}),
                                     **{
                                         "user_type": UserTypes.PROFESSOR.value,
                                         "refresh_token": None,
@@ -50,10 +50,10 @@ class ProfessorService:
                 raise ConflictException("Already exist", "email/username/matricula already used")
 
     async def update_one(self, id: str, request: HttpRequest):
-        aluno = ProfessorModel(**request.body)
+        professor = ProfessorModel(**request.body)
         async with get_db() as session:
             repo = ProfessorRepository(session)
-            return await repo.update_one(id, aluno.model_dump(exclude_none=True))
+            return await repo.update_one(id, professor.model_dump(exclude_none=True))
 
     async def delete_one(self, id: str):
         async with get_db() as session:

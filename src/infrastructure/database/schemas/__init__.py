@@ -7,3 +7,4 @@ from .professor import Professor
 from .auth import Auth
 from .admin import Admin
 from .solicitacao import Solicitacao
+from .orientacao import Orientacao

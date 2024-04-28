@@ -9,8 +9,18 @@ PROFESSOR = Blueprint("professor")
 
 
 @PROFESSOR.route("/professores", methods=["GET"])
-# @authenticated("al:ra")
+@authenticated("pf:ra")
 async def get_professors(request: request):
+    handler = ProfessorController().get_all
+    return await sanic_request_handler(
+        request=request, api_route=handler
+    )
+
+
+@PROFESSOR.route("/professores/available", methods=["GET"])
+@authenticated("pf:avr")
+async def create_professor(request: request):
+    request.args["available"] = ["true"]
     handler = ProfessorController().get_all
     return await sanic_request_handler(
         request=request, api_route=handler

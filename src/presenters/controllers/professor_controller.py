@@ -9,8 +9,8 @@ class ProfessorController:
 
         return HttpResponse.build(result, HTTPStatus.CREATED, {})
 
-    async def get_one(self, aluno_id: str, request: HttpRequest = None):
-        result = await ProfessorService().get_one(aluno_id)
+    async def get_one(self, professor_id: str, request: HttpRequest = None):
+        result = await ProfessorService().get_one(professor_id)
 
         return HttpResponse.build(result, HTTPStatus.OK, {})
 
@@ -19,12 +19,12 @@ class ProfessorController:
 
         return HttpResponse.build(result, HTTPStatus.OK, {})
 
-    async def update_one(self, aluno_id: str, request: HttpRequest = None):
-        result = await ProfessorService().update_one(aluno_id, request)
+    async def update_one(self, professor_id: str, request: HttpRequest = None):
+        result = await ProfessorService().update_one(professor_id, request)
 
         return HttpResponse.build(result, HTTPStatus.OK, {})
 
-    async def delete_one(self, aluno_id: str, request: HttpRequest = None):
-        await ProfessorService().delete_one(aluno_id)
+    async def delete_one(self, professor_id: str, request: HttpRequest = None):
+        await ProfessorService().delete_one(professor_id)
 
         return HttpResponse.build(None, HTTPStatus.NO_CONTENT, {})
