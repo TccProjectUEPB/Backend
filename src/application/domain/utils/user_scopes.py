@@ -18,6 +18,10 @@ class UserScopes(Enum):
         "pf:r",
         "pf:u",
         "pf:d",
+        "slp:r",  # Solicitacao
+        "sla:r",
+        "sl:c",
+        "sl:u",
     ]
 
     GESTOR = [
@@ -27,6 +31,7 @@ class UserScopes(Enum):
         "pf:avr",
         "pf:r",
         "pf:u",  # Professor
+        "slp:r",  # Solicitacao
     ]
 
     PROFESSOR = [
@@ -35,6 +40,8 @@ class UserScopes(Enum):
         "pf:ra",
         "pf:r",
         "pf:u",  # Professor
+        "slp:r",  # Solicitacao
+        "sl:u",
     ]
 
     ALUNO = [
@@ -42,4 +49,6 @@ class UserScopes(Enum):
         "al:ra",
         "pf:avr",
         "al:u",
+        "sl:c",  # Solicitacao
+        "sla:r",
     ]

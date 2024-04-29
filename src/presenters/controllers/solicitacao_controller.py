@@ -7,13 +7,13 @@ from http import HTTPStatus
 
 class SolicitacaoController:
 
-    async def send(self, request: HttpRequest):
+    async def create(self, request: HttpRequest):
         result = await SolicitacaoService().create(request)
 
         return HttpResponse.build(result, HTTPStatus.CREATED, {})
 
-    async def get_by_prof(self, professor_id: str, request: HttpRequest = None):
-        result = await SolicitacaoService().get_all_of_prof(professor_id, request)
+    async def get_all(self, request: HttpRequest = None):
+        result = await SolicitacaoService().get_all(request)
 
         return HttpResponse.build(result, HTTPStatus.OK, {})
 

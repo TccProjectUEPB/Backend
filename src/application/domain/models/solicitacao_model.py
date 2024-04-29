@@ -35,6 +35,22 @@ class CreateSolicitacaoModel(BaseModel):
         return str(id)
 
 
+class UpdateSolicitacaoModel(BaseModel):
+    status: StrictStr = Field(...,
+        pattern=r"{value1}|{value2}".format(value1=RequestType.ACEITO.value,
+                                            value2=RequestType.REJEITADO.value)
+    )
+    updated_at: Optional[datetime] = Field(
+        default_factory=lambda: datetime.now().replace(microsecond=0)
+    )
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        arbitrary_types_allowed=True,
+        from_attributes=True,
+        json_encoders={datetime: lambda dt: dt.replace(microsecond=0).isoformat()+"Z"})
+
+
 class SolicitacaoModel(BaseModel):
     id: Optional[UUID] = None
     aluno_id: UUID

@@ -1,5 +1,5 @@
 from src.presenters.controllers import ProfessorController
-from src.main.middlewares import authenticated
+from src.main.middlewares import authenticated, admin_or_id
 from src.main.request_handlers import sanic_request_handler
 from sanic import Blueprint, request
 from functools import partial
@@ -38,6 +38,7 @@ async def create_professor(request: request):
 
 @PROFESSOR.route("/professores/<professor_id:str>", methods=["GET"])
 @authenticated("pf:r")
+@admin_or_id("professor_id")
 async def get_professor(request: request, professor_id: str):
     handler = partial(ProfessorController().get_one, professor_id)
     return await sanic_request_handler(
@@ -47,6 +48,7 @@ async def get_professor(request: request, professor_id: str):
 
 @PROFESSOR.route("/professores/<professor_id:str>", methods=["PATCH"])
 @authenticated("pf:u")
+@admin_or_id("professor_id")
 async def update_professor(request: request, professor_id: str):
     handler = partial(ProfessorController().update_one, professor_id)
     return await sanic_request_handler(
@@ -56,6 +58,7 @@ async def update_professor(request: request, professor_id: str):
 
 @PROFESSOR.route("/professores/<professor_id:str>", methods=["DELETE"])
 @authenticated("pf:d")
+@admin_or_id("professor_id")
 async def delete_professor(request: request, professor_id: str):
     handler = partial(ProfessorController().delete_one, professor_id)
     return await sanic_request_handler(

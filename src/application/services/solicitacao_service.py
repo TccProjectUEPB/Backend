@@ -1,4 +1,4 @@
-from src.application.domain.models import CreateSolicitacaoModel, SolicitacaoModel, SolicitacaoQueryModel, CreateOrientacaoModel
+from src.application.domain.models import CreateSolicitacaoModel, UpdateSolicitacaoModel, SolicitacaoQueryModel, CreateOrientacaoModel
 from src.application.domain.utils import RequestType, OrientationType
 from src.infrastructure.database import get_db
 from src.infrastructure.repositories import (
@@ -45,7 +45,7 @@ class SolicitacaoService:
             if not prof:
                 raise ValidationException(
                     "Invalid Professor", "Professor does not exist")
-            elif prof["available"]:
+            elif not prof["available"]:
                 raise ConflictException(
                     "Invalid status", "professor is not available or inconsistent data provided")
             if await repo.get_all({"query": {
@@ -71,24 +71,29 @@ class SolicitacaoService:
                 "Invalid status", "already exists an active orientation")
 
     async def update_one(self, related_id: str, id: str, request: HttpRequest):
-        professor = SolicitacaoModel(**request.body)
+        professor = UpdateSolicitacaoModel(**request.body)
         async with get_db() as session:
             repo = SolicitacaoRepository(session)
+            data = await repo.get_one(id)
+            if not data or str(data["professor_id"]) != related_id or data["status"] != RequestType.PENDENTE.value:
+                raise ConflictException("Operation cannot proceed", "there is a conflict with the current state of the resource")
             try:
-                result = await repo.update_one(id, professor.model_dump(
-                    exclude_none=True, exclude={"id", "aluno_id", "professor_id", "description", "comment"}), commit=False)
-                if result:
-                    if result["status"] == RequestType.ACEITO.value:
-                        orientation_repo = OrientacaoRepository(session)
-                        print(await orientation_repo.get_all({"query": {"solicitacao_id": result["id"]}, "limit": 10}))
-                        await orientation_repo.create(CreateOrientacaoModel(
-                            aluno_id=result["aluno_id"],
-                            professor_id=result["professor_id"]
-                        ).model_dump(exclude_none=True))
-                    elif result["status"] == RequestType.REJEITADO.value:
-                        await session.commit()
+                result = await repo.update_one(related_id, id, professor.model_dump(
+                    exclude_none=True), commit=False)
+                if result["status"] == RequestType.ACEITO.value:
+                    orientation_repo = OrientacaoRepository(session)
+                    if await orientation_repo.get_one(result["id"]):
+                        raise ConflictException("Operation cannot proceed", "orientation already exists")
+                    await orientation_repo.create(CreateOrientacaoModel(
+                        solicitacao_id=result["id"],
+                        aluno_id=result["aluno_id"],
+                        professor_id=result["professor_id"]
+                    ).model_dump(exclude_none=True))
+                    return result
+                await session.commit()
 
-            except BaseException:
+            except BaseException as err:
+                print(err)
                 await session.rollback()
                 raise ConflictException("Already created", "Already created")
 

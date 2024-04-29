@@ -11,7 +11,7 @@ from datetime import datetime
 
 
 class CreateOrientacaoModel(BaseModel):
-    id: Optional[UUID] = None
+    solicitacao_id: Optional[UUID] = None
     aluno_id: UUID
     professor_id: UUID
     status: StrictStr = OrientationType.EM_ANDAMENTO.value
@@ -31,13 +31,13 @@ class CreateOrientacaoModel(BaseModel):
         from_attributes=True,
         json_encoders={datetime: lambda dt: dt.replace(microsecond=0).isoformat()+"Z"})
 
-    @field_serializer('id')
+    @field_serializer('solicitacao_id')
     def serialize_id(self, id):
         return str(id)
 
 
 class OrientacaoModel(BaseModel):
-    id: Optional[UUID] = None
+    solicitacao_id: Optional[UUID] = None
     aluno_id: UUID
     professor_id: UUID
     title: StrictStr
@@ -57,7 +57,7 @@ class OrientacaoModel(BaseModel):
         from_attributes=True,
         json_encoders={datetime: lambda dt: dt.replace(microsecond=0).isoformat()+"Z"})
 
-    @field_serializer('id')
+    @field_serializer('solicitacao_id')
     def serialize_id(self, id):
         return str(id)
 
