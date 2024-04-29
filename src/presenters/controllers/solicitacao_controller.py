@@ -16,3 +16,9 @@ class SolicitacaoController:
         result = await SolicitacaoService().get_all_of_prof(professor_id, request)
 
         return HttpResponse.build(result, HTTPStatus.OK, {})
+
+
+    async def update_one(self, professor_id: str, solicitacao_id: str, request: HttpRequest = None):
+        result = await SolicitacaoService().update_one(professor_id, solicitacao_id, request)
+
+        return HttpResponse.build(result, HTTPStatus.OK, {})

@@ -19,6 +19,7 @@ async def sanic_request_handler(api_route, request: Request) -> any:
     except Exception as err:
         handler_error = ApiExceptionManager.build(err)
         # logger.info(f"{err}: {request.body}")
+        print('err: ',err)
         return HttpResponse.build(
             handler_error.to_json(), status_code=handler_error.code
         )

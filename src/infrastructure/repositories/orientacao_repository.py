@@ -1,6 +1,7 @@
 from typing import Dict, Any
 from src.infrastructure.database.schemas import Orientacao
 from src.application.domain.models import OrientacaoModel, OrientacaoList
+from src.application.domain.utils import OrientationType
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
 )
@@ -37,6 +38,14 @@ class OrientacaoRepository:
         stream = await self.session.stream_scalars(stmt.order_by(Orientacao.id))
         return loads(OrientacaoList(root=[aluno async for aluno in stream]).model_dump_json())
 
+    async def has_active(self, aluno_id, professor_id) -> bool:
+        stmt = select(Orientacao).filter(
+            Orientacao.aluno_id == aluno_id,
+            Orientacao.professor_id == professor_id,
+            Orientacao.status != OrientationType.FINALIZADO.value).limit(1)
+        stream = await self.session.stream_scalars(stmt.order_by(Orientacao.solicitacao_id))
+        return loads(OrientacaoList(root=[aluno async for aluno in stream]).model_dump_json())
+
     async def update_one(self, id, data):
         update_stmt = Orientacao.__table__.update().returning(
             Orientacao.id, Orientacao.name, Orientacao.email, Orientacao.created_at, Orientacao.updated_at)\
@@ -55,7 +64,7 @@ class OrientacaoRepository:
 
 
     async def check_status(self, id):
-        get_status_stmt = select(Orientacao.status).where(Orientacao.id == id).limit(1)
+        get_status_stmt = select(Orientacao.status).where(Orientacao.solicitacao_id == id).limit(1)
         result = await self.session.execute(get_status_stmt)
         status = result.scalar()
         return status

@@ -12,7 +12,8 @@ from . import Base
 class Orientacao(Base):
     __tablename__ = "orientacao"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    solicitacao_id = Column(UUID(as_uuid=True), ForeignKey(
+        "solicitacao.id"), primary_key=True, default=uuid.uuid4, index=True)
     aluno_id = Column(UUID(as_uuid=True), ForeignKey(
         "aluno.id"))
     professor_id = Column(UUID(as_uuid=True), ForeignKey(

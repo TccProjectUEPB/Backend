@@ -15,9 +15,9 @@ class CreateOrientacaoModel(BaseModel):
     aluno_id: UUID
     professor_id: UUID
     status: StrictStr = OrientationType.EM_ANDAMENTO.value
-    title: StrictStr
-    description: StrictStr
-    metodology: StrictStr
+    title: StrictStr = ""
+    description: StrictStr = ""
+    metodology: StrictStr = ""
     created_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now().replace(microsecond=0)
     )

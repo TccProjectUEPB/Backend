@@ -15,7 +15,7 @@ class CreateSolicitacaoModel(BaseModel):
     aluno_id: UUID
     professor_id: UUID
     status: StrictStr = RequestType.PENDENTE.value
-    description: StrictStr
+    description: StrictStr = Field(..., min_length=30)
     comment: StrictStr
     created_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now().replace(microsecond=0)
