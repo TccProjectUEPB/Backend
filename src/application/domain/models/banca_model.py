@@ -10,14 +10,11 @@ from uuid import UUID
 from datetime import datetime
 
 
-class CreateOrientacaoModel(BaseModel):
+class CreateBancaModel(BaseModel):
     id: Optional[UUID] = None
-    aluno_id: UUID
-    professor_id: UUID
-    status: StrictStr = OrientationType.EM_ANDAMENTO.value
-    title: StrictStr = ""
-    description: StrictStr = ""
-    metodology: StrictStr = ""
+    date: StrictStr
+    score: Optional[float] = None
+    analyzers: Optional[List[StrictStr]] = None
     created_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now().replace(microsecond=0)
     )
@@ -36,7 +33,7 @@ class CreateOrientacaoModel(BaseModel):
         return str(id)
 
 
-class OrientacaoModel(BaseModel):
+class BancaModel(BaseModel):
     id: Optional[UUID] = None
     aluno_id: UUID
     professor_id: UUID
@@ -62,7 +59,7 @@ class OrientacaoModel(BaseModel):
         return str(id)
 
 
-class UpdateOrientacaoModel(BaseModel):
+class UpdateBancaModel(BaseModel):
     status: Optional[StrictStr] = Field(None,
         pattern=r"{value1}|{value2}".format(value1=OrientationType.EM_BANCA.value,
                                             value2=OrientationType.FINALIZADO.value)
@@ -81,11 +78,11 @@ class UpdateOrientacaoModel(BaseModel):
         json_encoders={datetime: lambda dt: dt.replace(microsecond=0).isoformat()+"Z"})
 
 
-class OrientacaoList(RootModel):
-    root: List[OrientacaoModel]
+class BancaList(RootModel):
+    root: List[BancaModel]
 
 
-class OrientacaoQueryModel(QueryModel):
+class BancaQueryModel(QueryModel):
     id: Optional[List[UUID]] = None
     professor_id: Optional[List[UUID]] = None
     status: Optional[List[Union[TypeOpStr, StrictStr]]] = None

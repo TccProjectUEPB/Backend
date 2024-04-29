@@ -15,13 +15,13 @@ class OrientacaoRepository:
 
     async def create(self, data: Dict[str, Any], commit=True):
         insert_stmt = Orientacao.__table__.insert().returning(
-            Orientacao.solicitacao_id, Orientacao.aluno_id, Orientacao.professor_id,
+            Orientacao.id, Orientacao.aluno_id, Orientacao.professor_id,
             Orientacao.status, Orientacao.title, Orientacao.description, Orientacao.metodology, Orientacao.created_at, Orientacao.updated_at)\
             .values(**data)
         result = (await self.session.execute(insert_stmt)).fetchone()
         if result:
             result = loads(OrientacaoModel(
-                solicitacao_id=result[0], aluno_id=result[1], professor_id=result[2],
+                id=result[0], aluno_id=result[1], professor_id=result[2],
                 status=result[3], title=result[4],
                 description=result[5], metodology=result[6],
                 created_at=result[7], updated_at=result[8])
@@ -31,12 +31,12 @@ class OrientacaoRepository:
 
     async def get_one(self, id):
         get_one_stmt = select(Orientacao).where(
-            Orientacao.solicitacao_id == id).limit(1)
+            Orientacao.id == id).limit(1)
         result = (await self.session.execute(get_one_stmt)).fetchone()
         if result:
             result = result[0]
             result = loads(OrientacaoModel(
-                solicitacao_id=result.solicitacao_id, aluno_id=result.aluno_id,
+                id=result.id, aluno_id=result.aluno_id,
                 professor_id=result.professor_id, status=result.status, title=result.title,
                 description=result.description, metodology=result.metodology,
                 created_at=result.created_at, updated_at=result.updated_at)
@@ -46,23 +46,23 @@ class OrientacaoRepository:
     async def get_all(self, filters={}):
         stmt = select(Orientacao).filter_by(
             **filters["query"]).limit(filters["limit"])
-        stream = await self.session.stream_scalars(stmt.order_by(Orientacao.solicitacao_id))
-        return loads(OrientacaoList(root=[aluno async for aluno in stream]).model_dump_json())
+        stream = await self.session.stream_scalars(stmt.order_by(Orientacao.id))
+        return loads(OrientacaoList(root=[orientacao async for orientacao in stream]).model_dump_json())
 
     async def has_active(self, aluno_id, professor_id) -> bool:
         stmt = select(Orientacao).filter(
             Orientacao.aluno_id == aluno_id,
             Orientacao.professor_id == professor_id,
             Orientacao.status != OrientationType.FINALIZADO.value).limit(1)
-        stream = await self.session.stream_scalars(stmt.order_by(Orientacao.solicitacao_id))
-        return loads(OrientacaoList(root=[aluno async for aluno in stream]).model_dump_json())
+        stream = await self.session.stream_scalars(stmt.order_by(Orientacao.id))
+        return loads(OrientacaoList(root=[orientacao async for orientacao in stream]).model_dump_json())
 
     async def update_one(self, id, data):
         update_stmt = Orientacao.__table__.update().returning(
-            Orientacao.solicitacao_id, Orientacao.aluno_id, Orientacao.professor_id,
+            Orientacao.id, Orientacao.aluno_id, Orientacao.professor_id,
             Orientacao.status, Orientacao.title, Orientacao.description, Orientacao.metodology,
             Orientacao.created_at, Orientacao.updated_at)\
-            .where(Orientacao.solicitacao_id == id)\
+            .where(Orientacao.id == id)\
             .values(**data)
         result = (await self.session.execute(update_stmt)).fetchone()
         if result:
@@ -77,7 +77,7 @@ class OrientacaoRepository:
 
     async def check_status(self, id):
         get_status_stmt = select(Orientacao.status).where(
-            Orientacao.solicitacao_id == id).limit(1)
+            Orientacao.id == id).limit(1)
         result = await self.session.execute(get_status_stmt)
         status = result.scalar()
         return status

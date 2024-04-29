@@ -8,3 +8,4 @@ from .auth import Auth
 from .admin import Admin
 from .solicitacao import Solicitacao
 from .orientacao import Orientacao
+from .banca import Banca

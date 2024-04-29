@@ -2,3 +2,4 @@ from .aluno_controller import AlunoController
 from .professor_controller import ProfessorController
 from .auth_controller import AuthController
 from .solicitacao_controller import SolicitacaoController
+from .orientacao_controller import OrientacaoController

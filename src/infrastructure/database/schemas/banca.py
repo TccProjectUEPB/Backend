@@ -12,7 +12,7 @@ from . import Base
 class Banca(Base):
     __tablename__ = "banca"
 
-    orientation_id = Column(UUID(as_uuid=True), ForeignKey(
+    id = Column(UUID(as_uuid=True), ForeignKey(
         "orientacao.id"), primary_key=True)
     date = Column(String(60))
     score = Column(FLOAT(2))

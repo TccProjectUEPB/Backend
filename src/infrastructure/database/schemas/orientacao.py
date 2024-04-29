@@ -12,7 +12,7 @@ from . import Base
 class Orientacao(Base):
     __tablename__ = "orientacao"
 
-    solicitacao_id = Column(UUID(as_uuid=True), ForeignKey(
+    id = Column(UUID(as_uuid=True), ForeignKey(
         "solicitacao.id"), primary_key=True, default=uuid.uuid4, index=True)
     aluno_id = Column(UUID(as_uuid=True), ForeignKey(
         "aluno.id"))

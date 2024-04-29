@@ -85,7 +85,7 @@ class SolicitacaoService:
                     if await orientation_repo.get_one(result["id"]):
                         raise ConflictException("Operation cannot proceed", "orientation already exists")
                     await orientation_repo.create(CreateOrientacaoModel(
-                        solicitacao_id=result["id"],
+                        id=result["id"],
                         aluno_id=result["aluno_id"],
                         professor_id=result["professor_id"]
                     ).model_dump(exclude_none=True))
