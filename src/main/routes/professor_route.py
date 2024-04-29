@@ -38,7 +38,6 @@ async def create_professor(request: request):
 
 @PROFESSOR.route("/professores/<professor_id:str>", methods=["GET"])
 @authenticated("pf:r")
-@admin_or_id("professor_id")
 async def get_professor(request: request, professor_id: str):
     handler = partial(ProfessorController().get_one, professor_id)
     return await sanic_request_handler(

@@ -71,16 +71,16 @@ class SolicitacaoService:
                 "Invalid status", "already exists an active orientation")
 
     async def update_one(self, related_id: str, id: str, request: HttpRequest):
-        professor = UpdateSolicitacaoModel(**request.body)
+        solicitacao = UpdateSolicitacaoModel(**request.body)
         async with get_db() as session:
             repo = SolicitacaoRepository(session)
             data = await repo.get_one(id)
             if not data or str(data["professor_id"]) != related_id or data["status"] != RequestType.PENDENTE.value:
                 raise ConflictException("Operation cannot proceed", "there is a conflict with the current state of the resource")
             try:
-                result = await repo.update_one(related_id, id, professor.model_dump(
+                result = await repo.update_one(related_id, id, solicitacao.model_dump(
                     exclude_none=True), commit=False)
-                if result["status"] == RequestType.ACEITO.value:
+                if result["status"] == RequestType.ACEITADO.value:
                     orientation_repo = OrientacaoRepository(session)
                     if await orientation_repo.get_one(result["id"]):
                         raise ConflictException("Operation cannot proceed", "orientation already exists")

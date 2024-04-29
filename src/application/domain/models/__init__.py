@@ -6,4 +6,7 @@ from .solicitacao_model import (
     CreateSolicitacaoModel, UpdateSolicitacaoModel,
     SolicitacaoModel, SolicitacaoList, SolicitacaoQueryModel
 )
-from .orientacao_model import CreateOrientacaoModel, OrientacaoModel, OrientacaoList, OrientacaoQueryModel
+from .orientacao_model import (
+    CreateOrientacaoModel, UpdateOrientacaoModel,
+    OrientacaoModel, OrientacaoList, OrientacaoQueryModel
+)

@@ -10,7 +10,7 @@ SOLICITACAO_ROUTES = Blueprint("solicitacao")
 
 @SOLICITACAO_ROUTES.route("/solicitacoes", methods=["GET"])
 @authenticated("sl:r")
-async def get_solicitacao_by_prof(request, professor_id):
+async def get_solicitacoes(request, professor_id):
     handler = partial(SolicitacaoController().get_all, professor_id)
     return await sanic_request_handler(handler, request)
 
@@ -34,7 +34,7 @@ async def get_solicitacao_by_prof(request, professor_id):
 @SOLICITACAO_ROUTES.route("/alunos/<aluno_id:str>/solicitacoes", methods=["GET"])
 @authenticated("sla:r")
 @admin_or_id("aluno_id")
-async def get_solicitacao_by_prof(request, aluno_id):
+async def get_solicitacao_by_aluno(request, aluno_id):
     request.args["aluno_id"] = [aluno_id]
     handler = SolicitacaoController().get_all
     return await sanic_request_handler(handler, request)
@@ -43,6 +43,6 @@ async def get_solicitacao_by_prof(request, aluno_id):
 @SOLICITACAO_ROUTES.route("/professores/<professor_id:str>/solicitacoes/<solicitacao_id:str>", methods=["PATCH"])
 @authenticated("sl:u")
 @admin_or_id("professor_id")
-async def aswer_solicitacao(request, professor_id: str, solicitacao_id: str):
+async def answer_solicitacao(request, professor_id: str, solicitacao_id: str):
     handler = partial(SolicitacaoController().update_one, professor_id, solicitacao_id)
     return await sanic_request_handler(handler, request)

@@ -37,7 +37,7 @@ class CreateSolicitacaoModel(BaseModel):
 
 class UpdateSolicitacaoModel(BaseModel):
     status: StrictStr = Field(...,
-        pattern=r"{value1}|{value2}".format(value1=RequestType.ACEITO.value,
+        pattern=r"{value1}|{value2}".format(value1=RequestType.ACEITADO.value,
                                             value2=RequestType.REJEITADO.value)
     )
     updated_at: Optional[datetime] = Field(
