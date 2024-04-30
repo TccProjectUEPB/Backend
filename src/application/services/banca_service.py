@@ -1,4 +1,9 @@
-from src.application.domain.models import UpdateBancaModel, BancaQueryModel
+from src.application.domain.models import (
+    CreateBancaModel,
+    ScheduleBancaModel,
+    FinishBancaModel,
+    BancaQueryModel,
+)
 from src.infrastructure.database import get_db
 from src.infrastructure.repositories import (
     BancaRepository,
@@ -19,12 +24,29 @@ class BancaService:
             repo = BancaRepository(session)
             return await repo.get_all(query)
 
-    async def update_one(self, id: str, request: HttpRequest):
-        orientation = UpdateBancaModel(**request.body)
+    async def create(self, request: HttpRequest):
+        banca = CreateBancaModel()
         async with get_db() as session:
             repo = BancaRepository(session)
-            return await repo.update_one(id, orientation.model_dump(
-                    exclude_none=True), commit=False)
+            return await repo.create(
+                id, banca.model_dump(exclude_none=True), commit=False
+            )
+
+    async def schedule(self, id: str, request: HttpRequest):
+        banca = ScheduleBancaModel(**request.body)
+        async with get_db() as session:
+            repo = BancaRepository(session)
+            return await repo.update_one(
+                id, banca.model_dump(exclude_none=True), commit=False
+            )
+
+    async def finish(self, id: str, request: HttpRequest):
+        banca = FinishBancaModel(**request.body)
+        async with get_db() as session:
+            repo = BancaRepository(session)
+            return await repo.update_one(
+                id, banca.model_dump(exclude_none=True), commit=False
+            )
 
     async def delete_one(self, id: str):
         async with get_db() as session:

@@ -9,8 +9,8 @@ class Banca(Base):
     __tablename__ = "banca"
 
     id = Column(UUID(as_uuid=True), ForeignKey("orientacao.id"), primary_key=True)
-    date = Column(String(60))
-    score = Column(FLOAT(2))
+    realized_at = Column(DateTime, nullable=True)
+    score = Column(FLOAT(2), nullable=True)
     status = Column(String(30))
     analyzers = Column(ARRAY(String(50)))
     created_at = Column(DateTime(timezone=True), server_default=func.now())

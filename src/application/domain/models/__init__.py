@@ -25,4 +25,11 @@ from .orientacao_model import (
     OrientacaoList,
     OrientacaoQueryModel,
 )
-from .banca_model import BancaModel, BancaList, BancaQueryModel
+from .banca_model import (
+    CreateBancaModel,
+    ScheduleBancaModel,
+    FinishBancaModel,
+    BancaModel,
+    BancaList,
+    BancaQueryModel,
+)

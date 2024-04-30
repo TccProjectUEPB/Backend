@@ -17,7 +17,7 @@ class BancaRepository:
             Banca.__table__.insert()
             .returning(
                 Banca.id,
-                Banca.date,
+                Banca.realized_at,
                 Banca.score,
                 Banca.status,
                 Banca.analyzers,
@@ -31,7 +31,7 @@ class BancaRepository:
             result = loads(
                 BancaModel(
                     id=result[0],
-                    date=result[1],
+                    realized_at=result[1],
                     score=result[2],
                     status=result[3],
                     analyzers=result[4],
@@ -50,7 +50,7 @@ class BancaRepository:
             result = loads(
                 BancaModel(
                     id=result.id,
-                    date=result.date,
+                    realized_at=result.realized_at,
                     score=result.score,
                     status=result.status,
                     analyzers=result.analyzers,
@@ -72,7 +72,7 @@ class BancaRepository:
             Banca.__table__.update()
             .returning(
                 Banca.id,
-                Banca.date,
+                Banca.realized_at,
                 Banca.score,
                 Banca.status,
                 Banca.analyzers,
@@ -87,7 +87,7 @@ class BancaRepository:
             result = loads(
                 BancaModel(
                     id=result[0],
-                    date=result[1],
+                    realized_at=result[1],
                     score=result[2],
                     status=result[3],
                     analyzers=result[3],
