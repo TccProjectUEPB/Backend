@@ -4,3 +4,4 @@ from .auth_repository import AuthRepository
 from .solicitacao_repository import SolicitacaoRepository
 from .orientacao_repository import OrientacaoRepository
 from .banca_repository import BancaRepository
+from .tarefa_repository import TarefaRepository

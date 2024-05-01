@@ -21,6 +21,7 @@ class TarefaRepository:
                 Tarefa.title,
                 Tarefa.description,
                 Tarefa.status,
+                Tarefa.deadline,
                 Tarefa.extra,
                 Tarefa.created_at,
                 Tarefa.updated_at,
@@ -36,9 +37,10 @@ class TarefaRepository:
                     title=result[2],
                     description=result[3],
                     status=result[4],
-                    extra=result[5],
-                    created_at=result[6],
-                    updated_at=result[7],
+                    deadline=result[5],
+                    extra=result[6],
+                    created_at=result[7],
+                    updated_at=result[8],
                 ).model_dump_json()
             )
             commit and await self.session.commit()
@@ -56,6 +58,7 @@ class TarefaRepository:
                     title=result.title,
                     description=result.description,
                     status=result.status,
+                    deadline=result.deadline,
                     extra=result.extra,
                     created_at=result.created_at,
                     updated_at=result.updated_at,
@@ -79,6 +82,7 @@ class TarefaRepository:
                 Tarefa.title,
                 Tarefa.description,
                 Tarefa.status,
+                Tarefa.deadline,
                 Tarefa.extra,
                 Tarefa.created_at,
                 Tarefa.updated_at,
@@ -95,9 +99,10 @@ class TarefaRepository:
                     title=result[2],
                     description=result[3],
                     status=result[4],
-                    extra=result[5],
-                    created_at=result[6],
-                    updated_at=result[7],
+                    deadline=result[5],
+                    extra=result[6],
+                    created_at=result[7],
+                    updated_at=result[8],
                 ).model_dump_json()
             )
             await self.session.commit()

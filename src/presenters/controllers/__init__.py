@@ -4,3 +4,4 @@ from .auth_controller import AuthController
 from .solicitacao_controller import SolicitacaoController
 from .orientacao_controller import OrientacaoController
 from .banca_controller import BancaController
+from .tarefa_controller import TarefaController

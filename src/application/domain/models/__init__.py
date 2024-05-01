@@ -33,3 +33,10 @@ from .banca_model import (
     BancaList,
     BancaQueryModel,
 )
+from .tarefa_model import (
+    CreateTarefaModel,
+    UpdateTarefaModel,
+    TarefaModel,
+    TarefaList,
+    TarefaQueryModel,
+)
