@@ -27,7 +27,7 @@ class BancaService:
             return await repo.get_all(query)
 
     async def create(self, id, request: HttpRequest):
-        banca = CreateBancaModel()
+        banca = CreateBancaModel(id=id)
         async with get_db() as session:
             repo = BancaRepository(session)
             orientation_repo = OrientacaoRepository(session)
@@ -39,10 +39,14 @@ class BancaService:
                     "Invalid state", "Entity is on an invalid state"
                 )
             try:
-                await repo.create(id, banca.model_dump(exclude_none=True), commit=False)
+                result = await repo.create(
+                    banca.model_dump(exclude_none=True), commit=False
+                )
                 await orientation_repo.update_one(
                     id, {"status": OrientationType.EM_BANCA.value}
                 )
+                await session.commit()
+                return result
             except BaseException as err:
                 await session.rollback()
                 raise err
@@ -51,17 +55,38 @@ class BancaService:
         banca = ScheduleBancaModel(**request.body)
         async with get_db() as session:
             repo = BancaRepository(session)
-            return await repo.update_one(
-                id, banca.model_dump(exclude_none=True), commit=False
-            )
+            orientation_repo = OrientacaoRepository(session)
+            orientation = await orientation_repo.get_one(id)
+            if not orientation:
+                raise ConflictException("It does not exists", "Entity does not exists")
+            if orientation["status"] != OrientationType.EM_BANCA.value:
+                raise ConflictException(
+                    "Invalid state", "Entity is on an invalid state"
+                )
+            return await repo.update_one(id, banca.model_dump(exclude_none=True))
 
     async def finish(self, id: str, request: HttpRequest):
         banca = FinishBancaModel(**request.body)
         async with get_db() as session:
             repo = BancaRepository(session)
-            return await repo.update_one(
-                id, banca.model_dump(exclude_none=True), commit=False
-            )
+            orientation_repo = OrientacaoRepository(session)
+            orientation = await orientation_repo.get_one(id)
+            if not orientation:
+                raise ConflictException("It does not exists", "Entity does not exists")
+            if orientation["status"] != OrientationType.EM_BANCA.value:
+                raise ConflictException(
+                    "Invalid state", "Entity is on an invalid state"
+                )
+            try:
+                result = await repo.update_one(id, banca.model_dump(exclude_none=True))
+                await orientation_repo.update_one(
+                    id, {"status": OrientationType.FINALIZADO.value}
+                )
+                await session.commit()
+                return result
+            except BaseException as err:
+                await session.rollback()
+                raise err
 
     async def delete_one(self, id: str):
         async with get_db() as session:

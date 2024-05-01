@@ -41,7 +41,7 @@ class CreateBancaModel(BaseModel):
 
 class BancaModel(BaseModel):
     id: Optional[UUID] = None
-    realized_at: StrictStr
+    realized_at: Optional[datetime]
     score: Optional[StrictFloat] = None
     status: Optional[StrictStr] = None
     analyzers: Optional[List[StrictStr]] = None
@@ -68,10 +68,11 @@ class BancaModel(BaseModel):
 
 class ScheduleBancaModel(BaseModel):
     id: Optional[UUID] = None
+    realized_at: datetime
     status: StrictStr = Field(
         BancaType.AGENDADO.value, pattern=BancaType.AGENDADO.value
     )
-    analyzers: List[StrictStr] = Field(min_length=1, max_length=5)
+    analyzers: List[StrictStr] = Field(..., min_length=1, max_length=5)
     updated_at: Optional[datetime] = Field(
         default_factory=lambda: datetime.now().replace(microsecond=0)
     )

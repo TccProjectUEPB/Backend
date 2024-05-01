@@ -90,9 +90,9 @@ class BancaRepository:
                     realized_at=result[1],
                     score=result[2],
                     status=result[3],
-                    analyzers=result[3],
-                    created_at=result[4],
-                    updated_at=result[5],
+                    analyzers=result[4],
+                    created_at=result[5],
+                    updated_at=result[6],
                 ).model_dump_json()
             )
             await self.session.commit()
