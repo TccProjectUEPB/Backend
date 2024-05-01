@@ -2,9 +2,12 @@ from typing import Optional, List, Union
 from .query_model import QueryModel
 from src.application.domain.utils import OrientationType, TypeOpStr
 from pydantic import (
-    BaseModel, RootModel, ConfigDict,
-    Field, field_serializer,
-    StrictStr
+    BaseModel,
+    RootModel,
+    ConfigDict,
+    Field,
+    field_serializer,
+    StrictStr,
 )
 from uuid import UUID
 from datetime import datetime
@@ -29,9 +32,12 @@ class CreateOrientacaoModel(BaseModel):
         populate_by_name=True,
         arbitrary_types_allowed=True,
         from_attributes=True,
-        json_encoders={datetime: lambda dt: dt.replace(microsecond=0).isoformat()+"Z"})
+        json_encoders={
+            datetime: lambda dt: dt.replace(microsecond=0).isoformat() + "Z"
+        },
+    )
 
-    @field_serializer('id')
+    @field_serializer("id")
     def serialize_id(self, id):
         return str(id)
 
@@ -55,18 +61,17 @@ class OrientacaoModel(BaseModel):
         populate_by_name=True,
         arbitrary_types_allowed=True,
         from_attributes=True,
-        json_encoders={datetime: lambda dt: dt.replace(microsecond=0).isoformat()+"Z"})
+        json_encoders={
+            datetime: lambda dt: dt.replace(microsecond=0).isoformat() + "Z"
+        },
+    )
 
-    @field_serializer('id')
+    @field_serializer("id")
     def serialize_id(self, id):
         return str(id)
 
 
 class UpdateOrientacaoModel(BaseModel):
-    status: Optional[StrictStr] = Field(None,
-        pattern=r"{value1}|{value2}".format(value1=OrientationType.EM_BANCA.value,
-                                            value2=OrientationType.FINALIZADO.value)
-    )
     title: Optional[StrictStr] = None
     description: Optional[StrictStr] = None
     metodology: Optional[StrictStr] = None
@@ -78,7 +83,10 @@ class UpdateOrientacaoModel(BaseModel):
         populate_by_name=True,
         arbitrary_types_allowed=True,
         from_attributes=True,
-        json_encoders={datetime: lambda dt: dt.replace(microsecond=0).isoformat()+"Z"})
+        json_encoders={
+            datetime: lambda dt: dt.replace(microsecond=0).isoformat() + "Z"
+        },
+    )
 
 
 class OrientacaoList(RootModel):
@@ -87,12 +95,12 @@ class OrientacaoList(RootModel):
 
 class OrientacaoQueryModel(QueryModel):
     id: Optional[List[UUID]] = None
+    aluno_id: Optional[List[UUID]] = None
     professor_id: Optional[List[UUID]] = None
     status: Optional[List[Union[TypeOpStr, StrictStr]]] = None
     title: Optional[List[Union[TypeOpStr, StrictStr]]] = None
     description: Optional[List[Union[TypeOpStr, StrictStr]]] = None
     metodology: Optional[List[Union[TypeOpStr, StrictStr]]] = None
-    
 
     def integrate_regex(text: str):
         # text = f"^{text}" if text[0] != ["*"] else text.replace("*", ".*", 1)

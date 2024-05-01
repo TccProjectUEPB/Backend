@@ -4,6 +4,7 @@ from .professor_route import PROFESSOR
 from .auth_route import AUTH_ROUTES
 from .solicitacao_route import SOLICITACAO_ROUTES
 from .orientacao_route import ORIENTACAO_ROUTES
+from .banca_route import BANCA_ROUTES
 
 ROUTES = Blueprint.group(
     ALUNO,
@@ -11,4 +12,5 @@ ROUTES = Blueprint.group(
     AUTH_ROUTES,
     SOLICITACAO_ROUTES,
     ORIENTACAO_ROUTES,
+    BANCA_ROUTES,
 )

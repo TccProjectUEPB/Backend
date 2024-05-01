@@ -1,24 +1,30 @@
-from src.application.domain.models import CreateSolicitacaoModel
-from src.application.services BancaService
-from src.application.domain.utils import UserTypes, UserScopes
+from src.application.services import BancaService
 from src.presenters.helpers import HttpRequest, HttpResponse
 from http import HTTPStatus
 
 
 class BancaController:
+    async def get_one(self, id, request: HttpRequest = None):
+        result = await BancaService().get_one(id, request)
 
-    async def create(self, request: HttpRequest):
-        result = await BancaService().create(request)
-
-        return HttpResponse.build(result, HTTPStatus.CREATED, {})
+        return HttpResponse.build(result, HTTPStatus.OK, {})
 
     async def get_all(self, request: HttpRequest = None):
         result = await BancaService().get_all(request)
 
         return HttpResponse.build(result, HTTPStatus.OK, {})
 
+    async def create(self, id: str, request: HttpRequest):
+        result = await BancaService().create(id, request)
 
-    async def update_one(self, professor_id: str, solicitacao_id: str, request: HttpRequest = None):
-        result = await BancaService().update_one(professor_id, solicitacao_id, request)
+        return HttpResponse.build(result, HTTPStatus.CREATED, {})
+
+    async def schedule(self, id: str, request: HttpRequest = None):
+        result = await BancaService().schedule(id, request)
+
+        return HttpResponse.build(result, HTTPStatus.OK, {})
+
+    async def finish(self, id: str, request: HttpRequest = None):
+        result = await BancaService().finish(id, request)
 
         return HttpResponse.build(result, HTTPStatus.OK, {})

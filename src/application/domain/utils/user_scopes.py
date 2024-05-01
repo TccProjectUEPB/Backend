@@ -22,6 +22,14 @@ class UserScopes(Enum):
         "sla:r",
         "sl:c",
         "sl:u",
+        "orp:r",  # Orientacao,
+        "ora:r",
+        "orp:u",
+        "bc:ra",  # Banca
+        "bc:r",
+        "bc:c",
+        "bc:s",
+        "bc:fn",
     ]
 
     GESTOR = [
@@ -32,6 +40,13 @@ class UserScopes(Enum):
         "pf:r",
         "pf:u",  # Professor
         "slp:r",  # Solicitacao
+        "orp:r",  # Orientacao
+        "ora:r",
+        "bc:ra",  # Banca
+        "bc:r",
+        "bc:c",
+        "bc:s",
+        "bc:fn",
     ]
 
     PROFESSOR = [
@@ -42,6 +57,10 @@ class UserScopes(Enum):
         "pf:u",  # Professor
         "slp:r",  # Solicitacao
         "sl:u",
+        "orp:r",  # Orientacao
+        "orp:u",
+        "bc:r",  # Banca
+        "bc:c",
     ]
 
     ALUNO = [
@@ -51,4 +70,6 @@ class UserScopes(Enum):
         "al:u",
         "sl:c",  # Solicitacao
         "sla:r",
+        "ora:r",  # Orientacao
+        "bc:r",  # Banca
     ]

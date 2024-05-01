@@ -14,7 +14,7 @@ class OrientacaoService:
             if result and result["professor_id"] == related_id:
                 return result
             return None
-        
+
     async def get_one_by_aluno(self, related_id: str, id: str, request: HttpRequest):
         async with get_db() as session:
             repo = OrientacaoRepository(session)
@@ -33,8 +33,7 @@ class OrientacaoService:
         orientation = UpdateOrientacaoModel(**request.body)
         async with get_db() as session:
             repo = OrientacaoRepository(session)
-            return await repo.update_one(related_id, id, orientation.model_dump(
-                    exclude_none=True), commit=False)
+            return await repo.update_one(id, orientation.model_dump(exclude_none=True))
 
     async def delete_one(self, id: str):
         async with get_db() as session:

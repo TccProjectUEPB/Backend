@@ -111,14 +111,19 @@ class OrientacaoRepository:
             .values(**data)
         )
         result = (await self.session.execute(update_stmt)).fetchone()
+        print(result)
         if result:
             result = loads(
                 OrientacaoModel(
                     id=result[0],
-                    name=result[1],
-                    email=result[2],
-                    created_at=result[3],
-                    updated_at=result[4],
+                    aluno_id=result[1],
+                    professor_id=result[2],
+                    status=result[3],
+                    title=result[4],
+                    description=result[5],
+                    metodology=result[6],
+                    created_at=result[7],
+                    updated_at=result[8],
                 ).model_dump_json()
             )
             await self.session.commit()
