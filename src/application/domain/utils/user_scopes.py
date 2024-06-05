@@ -20,6 +20,7 @@ class UserScopes(Enum):
         "pf:d",
         "slp:r",  # Solicitacao
         "sla:r",
+        "sl:r",
         "sl:c",
         "sl:u",
         "orp:r",  # Orientacao,
